@@ -1,0 +1,61 @@
+add model category: 
+	Models/Category.cs
+
+add dbcontext:
+	namespace Rocky.Data
+	{
+		public class ApplicationDbContext : DbContext
+		{
+			public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+			{
+
+			}
+
+			public DbSet<Category> Category { get; set; }
+		}
+	}
+
+settings:
+	{
+	  "ConnectionStrings": {
+		"DefaultConnection": "Server=.;Database=Rocky;Trusted_Connection=True;MultipleActiveResultSets=true"
+	  },
+
+nuget:
+	Microsoft.EntityFrameworkCore.SqlServer
+
+add config:
+	public void ConfigureServices(IServiceCollection services)
+	{
+		services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+		 Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+migration:
+	((dotnet -info
+	dotnet tool install --global dotnet-ef --version 5.0.3 (dotnet tool update --global dotnet-ef)
+	dotnet ef -h
+	dotnet tool list -g))
+	
+	dotnet tool update --global dotnet-ef
+	
+	dotnet ef migrations add AddCategoryToDatabase
+	dotnet ef database update
+	
+get data:
+	public class CategoryController : Controller
+    {
+        private readonly ApplicationDbContext _db;
+        public CategoryController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
+        public IActionResult Index()
+        {
+            IEnumerable<Category> objList = _db.Category;
+			
+________________________________________________________________________________________________________
+			
+			
