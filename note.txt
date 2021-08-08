@@ -58,4 +58,6 @@ get data:
 			
 ________________________________________________________________________________________________________
 			
-			
+dotnet ef migrations add AddApplicationTypeToDatabase
+dotnet ef database update			
+
