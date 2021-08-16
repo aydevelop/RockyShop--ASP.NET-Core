@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rocky.Data;
+using System;
 
 namespace Rocky
 {
@@ -21,7 +22,15 @@ namespace Rocky
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-             Configuration.GetConnectionString("DefaultConnection")));
+            Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddHttpContextAccessor();
+            services.AddSession(Options =>
+            {
+                Options.IdleTimeout = TimeSpan.FromMinutes(10);
+                Options.Cookie.HttpOnly = true;
+                Options.Cookie.IsEssential = true;
+            });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
@@ -46,6 +55,7 @@ namespace Rocky
 
             app.UseAuthorization();
 
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

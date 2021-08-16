@@ -59,5 +59,22 @@ get data:
 ________________________________________________________________________________________________________
 			
 dotnet ef migrations add AddApplicationTypeToDatabase
-dotnet ef database update			
+dotnet ef database update		
+
+SESSION:
+1:::
+	services.AddHttpContextAccessor();
+	services.AddSession(Options =>
+	{
+		Options.IdleTimeout = TimeSpan.FromMinutes(10);
+		Options.Cookie.HttpOnly = true;
+		Options.Cookie.IsEssential = true;
+	});
+
+2:::
+	app.UseSession();
+	app.UseEndpoints(endpoints =>
+    {
+		
+	
 
