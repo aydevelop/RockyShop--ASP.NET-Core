@@ -75,6 +75,48 @@ SESSION:
 	app.UseSession();
 	app.UseEndpoints(endpoints =>
     {
-		
 	
+3:::
+	public static class SessionExtensions
+    {
+        public static void Set<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonSerializer.Serialize(value));
+        }
+
+        public static T Get<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+            return value == null ? default : JsonSerializer.Deserialize<T>(value);
+        }
+    }
+4:::
+	[_Layout.cshtml]
+	@using Microsoft.AspNetCore.Http
+	@inject IHttpContextAccessor HttpContextAccessor
+	@using Rocky.Utility
+5:::
+	@if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(Env.SessionCart) != null)
+	{
+		<a asp-action="Index" asp-controller="Cart" class="nav-link">
+			@{ var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(Env.SessionCart).Count; }
+			<i class="fas fa-shopping-cart"></i> &nbsp; (@count)
+		</a> 
+	}
+6:::		
+	[HttpPost, ActionName("Details")]
+	public IActionResult DetailsPost(int id)
+	{
+		List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+		if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(Env.SessionCart) != null
+			&& HttpContext.Session.Get<IEnumerable<ShoppingCart>>(Env.SessionCart).Count() > 0)
+		{
+			shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(Env.SessionCart);
+		}
+		shoppingCartList.Add(new ShoppingCart { ProductId = id });
+		HttpContext.Session.Set(Env.SessionCart, shoppingCartList);
+		return RedirectToAction(nameof(Index));
+	}
+
+________________________________________________________________________________________________________
 
