@@ -119,4 +119,38 @@ SESSION:
 	}
 
 ________________________________________________________________________________________________________
+Identity
 
+1:::
+	public class ApplicationDbContext : IdentityDbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+		
+2:::
+    services.AddIdentity<IdentityUser, IdentityRole>()
+		  .AddDefaultTokenProviders()
+		  .AddDefaultUI()
+		  .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+3:::
+	app.UseRouting();
+	app.UseAuthentication();
+	app.UseAuthorization();
+4:::
+	dotnet ef migrations add ScaffoldIdentity
+	dotnet ef database update
+5:::
+	Add New Scaffolded Item > Identity -> [Override all files + select _Layout.cshtml + select DBContext]
+6:::
+	public void ConfigureServices(IServiceCollection services)
+    {services.AddRazorPages();
+
+	app.UseEndpoints(endpoints =>
+	{endpoints.MapRazorPages();
+7::
+	 <partial name="_LoginPartial" />
+	 
+	 
+	 
