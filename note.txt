@@ -153,4 +153,50 @@ Identity
 	 <partial name="_LoginPartial" />
 	 
 	 
-	 
+________________________________________________________________________________________________________
+Modify identity table (add FullName column)
+
+1:::
+namespace Rocky.Models
+{
+    public class ApplicationUser : IdentityUser
+    {
+        public string FullName { get; set; }
+    }
+}
+
+2:::
+public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
+3:::
+	dotnet ef migrations add AddCategoryToDatabase
+	dotnet ef database update
+	
+________________________________________________________________________________________________________
+Role Manager
+
+1:::
+      public RegisterModel(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            ILogger<RegisterModel> logger,
+            IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
+        {
+            _roleManager = roleManager;
+			
+2:::
+	  public async Task OnGetAsync(string returnUrl = null)
+        {
+            if(!await _roleManager.RoleExistsAsync(Env.AdminRole))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(Env.AdminRole));
+                await _roleManager.CreateAsync(new IdentityRole(Env.CustomerRole));
+            }
+			
+3:::
+	  services.AddIdentity<IdentityUser, IdentityRole>()
+	  
+4:::
+	 if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, Env.AdminRole);
