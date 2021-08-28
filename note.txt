@@ -200,3 +200,27 @@ Role Manager
 	 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, Env.AdminRole);
+					
+5:::
+	//await _userManager.AddToRoleAsync(user, Env.AdminRole);
+	if (User.IsInRole(Env.AdminRole))
+	{
+		//admin try to create a new user
+		await _userManager.AddToRoleAsync(user, Env.AdminRole);
+	}
+	else
+	{
+		await _userManager.AddToRoleAsync(user, Env.CustomerRole);
+	}
+	
+6:::
+	@if (User.IsInRole(Rocky.Env.AdminRole))
+	{
+		<button type="submit" class="btn btn-primary">Register Admin User</button>
+	}
+	else
+	{
+		<button type="submit" class="btn btn-primary">Register</button>
+	}
+
+					
