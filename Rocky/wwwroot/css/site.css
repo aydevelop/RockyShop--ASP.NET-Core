@@ -72,9 +72,21 @@ body {
 
 
 .btn {
-    margin-top: 5px;
+    margin-top: 15px;
 }
 
 #logout {
     margin-top: 0px;
+}
+
+.field-validation-error{
+    font-size: 12px;
+}
+
+.form-control{
+    margin-top: 10px;
+}
+
+.card-img-top{
+    max-width: 140px;
 }

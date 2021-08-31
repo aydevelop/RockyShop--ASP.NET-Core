@@ -46,8 +46,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Create Admin User</a>
                 </div>
-            </li>
-}
+            </li>}
                         <li>
                             @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(Env.SessionCart) != null)
                             {
