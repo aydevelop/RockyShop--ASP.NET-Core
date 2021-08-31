@@ -223,4 +223,11 @@ Role Manager
 		<button type="submit" class="btn btn-primary">Register</button>
 	}
 
+________________________________________________________________________________________________________
+Authorize
+
+[Authorize]
+public class CartController : Controller {
+
+
 					

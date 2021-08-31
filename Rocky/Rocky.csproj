@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Views\ApplicationType\" />
     <Folder Include="wwwroot\images\product\" />
+    <Folder Include="wwwroot\templates\" />
   </ItemGroup>
 
 </Project>
